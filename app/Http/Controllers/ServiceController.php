@@ -14,7 +14,11 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        //
+      // get all the clients
+      $services = Service::all();
+
+      // load the view and pass the services
+      return view('layouts.services.show', compact($services));
     }
 
     /**
@@ -24,7 +28,7 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        //
+      return view('layouts.services.show');
     }
 
     /**

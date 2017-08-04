@@ -10,7 +10,7 @@ class Client extends Model
     protected $fillable = ['title','description','status','contact_phone',
                           'contract_start_date','contract_end_date'];
 
-    public function person(){
+    public function service(){
         return $this->hasMany('Service', 'client_id','id');
     }
 }

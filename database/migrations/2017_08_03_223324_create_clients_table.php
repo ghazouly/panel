@@ -18,9 +18,9 @@ class CreateClientsTable extends Migration
             $table->string('title');
             $table->string('description');
             $table->boolean('status');
-            $table->integer('contact_phone');
-            $table->dateTime('contract_start_date')->nullable();
-            $table->dateTime('contract_end_date')->nullable();
+            $table->string('contact_phone');
+            $table->date('contract_start_date')->nullable();
+            $table->date('contract_end_date')->nullable();
             $table->timestamps();
         });
     }
