@@ -14,10 +14,10 @@ class CreateClientsTable extends Migration
     public function up()
     {
         Schema::create('clients', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title', 100);
-            $table->string('description', 1000);
-            $table->bool('status');
+            $table->increments('id')->unsigned();
+            $table->string('title');
+            $table->string('description');
+            $table->boolean('status');
             $table->integer('contact_phone');
             $table->dateTime('contract_start_date')->nullable();
             $table->dateTime('contract_end_date')->nullable();

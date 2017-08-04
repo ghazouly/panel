@@ -14,13 +14,13 @@ class CreateServicesTable extends Migration
     public function up()
     {
         Schema::create('services', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('clientId');
-            $table->foreign('clientId')->refrences('id')->on('clients');
-            $table->title('title', 100);
-            $table->type('type', 10);
-            $table->string('link', 1000);
-            $table->string('description', 1000);
+            $table->increments('id')->unsigned();
+            $table->integer('client_id')->unsigned();
+            $table->foreign('client_id')->references('id')->on('clients')->unsigned();
+            $table->string('title');
+            $table->string('type');
+            $table->string('link');
+            $table->string('description');
             $table->timestamps();
         });
     }

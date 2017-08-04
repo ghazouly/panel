@@ -11,6 +11,6 @@ class Client extends Model
                           'contract_start_date','contract_end_date'];
 
     public function person(){
-        return $this->hasMany('Service', 'client_id');
+        return $this->hasMany('Service', 'client_id','id');
     }
 }
