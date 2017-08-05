@@ -94,7 +94,7 @@ class ServiceController extends Controller
      */
     public function show($client_id, $id)
     {
-      // get the client
+      // get the service
       $client = Client::find($client_id);
       $service = Service::find($id);
       return view('layouts.services.show', compact('service', 'client'));
@@ -106,9 +106,14 @@ class ServiceController extends Controller
      * @param  \App\Service  $service
      * @return \Illuminate\Http\Response
      */
-    public function edit(Service $service)
+    public function edit($client_id, $id)
     {
-        //
+      // edit the service
+      //$client = Client::find($client_id);
+      $service = Service::find($id);
+      $service->client = Client::where('id',$service->client_id)->first();
+
+      return view('layouts.services.edit', compact('service'));
     }
 
     /**
@@ -118,9 +123,43 @@ class ServiceController extends Controller
      * @param  \App\Service  $service
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Service $service)
+    public function update($client_id, $id)
     {
-        //
+      //validate
+      $rules = array(
+          'title'               => 'required',
+          'description'         => 'required',
+          'type'                => 'required',
+          'link'                => 'required',
+      );
+      $validator = Validator::make(Input::all(), $rules);
+
+      //store
+      $service = Service::findOrFail($id);
+
+      $service->title                  = Input::get('title');
+      $service->description            = Input::get('description');
+
+      if (!is_null(Input::get('facebook'))){
+          $service->type               = Input::get('facebook');
+      }
+      elseif (!is_null(Input::get('twitter'))){
+          $service->type               = Input::get('twitter');
+      }
+      elseif (!is_null(Input::get('youtube'))){
+          $service->type               = Input::get('youtube');
+      }
+      elseif (!is_null(Input::get('instagram'))){
+          $service->type               = Input::get('instagram');
+      }
+
+      $service->link                   = Input::get('link');
+
+      $service->update();
+
+      // redirect
+      Session::flash('message', 'Successfully Updated the Service!');
+      return Redirect::to('clients/'.$client_id.'/services');
     }
 
     /**
@@ -129,8 +168,14 @@ class ServiceController extends Controller
      * @param  \App\Service  $service
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Service $service)
+    public function destroy($client_id, $id)
     {
-        //
+      // delete
+      $service = Service::find($id);
+      $service->delete();
+
+      // redirect
+      Session::flash('message', 'Successfully deleted the Service!');
+      return Redirect::to('clients/'.$client_id.'/services');
     }
 }

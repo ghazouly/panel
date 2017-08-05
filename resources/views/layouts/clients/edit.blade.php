@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h1>Edit {{ $client->name }}</h1>
+<h1>Edit {{ $client->title }}</h1>
 
 <!-- if there are creation errors, they will show here -->
 {!! Html::ul($errors->all()) !!}

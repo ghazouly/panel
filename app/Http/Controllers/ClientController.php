@@ -162,7 +162,7 @@ class ClientController extends Controller
       $client->contract_start_date    = Input::get('contract_start_date');
       $client->contract_end_date      = Input::get('contract_end_date');
 
-      $client->save();
+      $client->update();
 
       // redirect
       Session::flash('message', 'Successfully Updated the Client!');

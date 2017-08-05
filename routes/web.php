@@ -19,8 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
+Route::group(['middleware' => 'auth'], function () {
+//resourceful clients
 Route::resource('clients', 'ClientController');
-
-//services related with clients
+//resourceful services nested with clients
 Route::resource('clients.services', 'ServiceController');
+ });
