@@ -3,7 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Service;
+use App\Client;
 use Illuminate\Http\Request;
+use Validator;
+use Input;
+use Session;
+use Redirect;
+use Html;
 
 class ServiceController extends Controller
 {
@@ -12,13 +18,15 @@ class ServiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($client_id)
     {
-      // get all the clients
-      $services = Service::all();
+      $client = Client::find($client_id);
+
+      $services = Service::where('client_id', $client_id)->get();
+      //$services = Service::where('client_id', $client->id)->get();
 
       // load the view and pass the services
-      return view('layouts.services.show', compact($services));
+      return view('layouts.services.index', compact('services','client'));
     }
 
     /**
@@ -26,9 +34,10 @@ class ServiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($client_id)
     {
-      return view('layouts.services.show');
+      $client = Client::findOrFail($client_id);
+      return view('layouts.services.create', compact('client'));
     }
 
     /**
@@ -37,9 +46,44 @@ class ServiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $client_id)
     {
-        //
+      //validate
+      $rules = array(
+          'title'               => 'required',
+          'description'         => 'required',
+          'type'                => 'required',
+          'link'                => 'required',
+      );
+      $validator = Validator::make(Input::all(), $rules);
+
+      //store
+      $service = new Service;
+
+      $service->client_id              = $client_id;
+      $service->title                  = Input::get('title');
+      $service->description            = Input::get('description');
+
+      if (!is_null(Input::get('facebook'))){
+          $service->type               = Input::get('facebook');
+      }
+      elseif (!is_null(Input::get('twitter'))){
+          $service->type               = Input::get('twitter');
+      }
+      elseif (!is_null(Input::get('youtube'))){
+          $service->type               = Input::get('youtube');
+      }
+      elseif (!is_null(Input::get('instagram'))){
+          $service->type               = Input::get('instagram');
+      }
+
+      $service->link                   = Input::get('link');
+
+      $service->save();
+
+      // redirect
+      Session::flash('message', 'Successfully Created the Service!');
+      return Redirect::to('clients/'.$client_id.'/services');
     }
 
     /**
@@ -48,9 +92,12 @@ class ServiceController extends Controller
      * @param  \App\Service  $service
      * @return \Illuminate\Http\Response
      */
-    public function show(Service $service)
+    public function show($client_id, $id)
     {
-        //
+      // get the client
+      $client = Client::find($client_id);
+      $service = Service::find($id);
+      return view('layouts.services.show', compact('service', 'client'));
     }
 
     /**

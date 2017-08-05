@@ -21,7 +21,7 @@ class ClientController extends Controller
     public function index()
     {
       // get all the clients
-      $clients = Client::paginate(20);
+      $clients = Client::latest()->paginate(20);
 
       foreach ($clients as $client) {
           $client->services = Service::where('client_id',$client->id)->get();
