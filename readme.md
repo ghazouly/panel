@@ -1,15 +1,13 @@
-<h1>SHOP</h1>
+<h1>Panel</h1>
 
-## About SHOP
+## About Panel
 
-SHOP is an One-Page-Shop Web application, built using a [PHP](php.net) and AJAX in a one file and enables you to:
+Panel is an AdminPanel Web application, built using [Laravel](laravel.com) and enables you to:
 
-- Form to Login using {username} and {password}.
-- Cookie to Remember your login information.
-- Create, Read, Update and Delete Categories.
-- Create, Read, Update and Delete SubCategories.
-- Create, Read, Update and Delete Products.
-
+- Register and Login into the dashboard.
+- Create, Read, Update and Delete Clients.
+- Create, Read, Update and Delete Services related to each Client.
+- Services made abstract to accept duplicate & multiple channels for each type.  
 ## Contributing
 
 Thank you for considering contributing to the project! Follow [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) coding style guide.
