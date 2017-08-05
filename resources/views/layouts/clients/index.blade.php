@@ -20,7 +20,7 @@
 
 <!-- will be used to show any messages -->
 @if (Session::has('message'))
-    <div class="alert alert-info">{{ Session::get('message') }}</div>
+    <div class="alert alert-danger">{{ Session::get('message') }}</div>
 @endif
 
 <table class="table table-striped table-bordered">
@@ -79,18 +79,19 @@
             <td>
                 <!-- show the nerd (uses the show method found at GET /clients/{id} -->
                 <a class="btn btn-small btn-success" href="{{ URL::to('clients/' . $value->id) }}">
-                    <i class="fa  fa-user-circle"></i>
+                    <i class="fa  fa-user-circle"></i> View
                 </a>
 
                 <!-- edit this nerd (uses the edit method found at GET /clients/{id}/edit -->
                 <a class="btn btn-small btn-info" href="{{ URL::to('clients/' . $value->id . '/edit') }}">
-                    <i class="fa fa-pencil-square-o"></i>
-                </a>
+                    <i class="fa fa-pencil-square-o"></i> Edit
+                </a><br>
 
                 <!-- delete the nerd (uses the destroy method DESTROY /clients/{id} -->
-                <a class="btn btn-small btn-danger" href="{{ URL::to('clients/' . $value->id) }}">
-                    <i class="fa fa-trash"></i>
-                </a>
+                {{ Form::open(array('url' => 'clients/' . $value->id, 'class' => 'pull-right')) }}
+                    {{ Form::hidden('_method', 'DELETE') }}
+                    {{ Form::submit('Delete', array('class' => 'btn btn-danger')) }}
+                {{ Form::close() }}
 
             </td>
         </tr>

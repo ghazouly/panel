@@ -46,12 +46,12 @@
 
     <div class="form-group">
         {!! Form::label('contract_start_date', 'Contract Start Date') !!}
-        {!! Form::date('contract_start_date', \Carbon\Carbon::now(), Input::old('contract_start_date'), array('class' => 'form-control')) !!}
+        {!! Form::date('contract_start_date', Input::old('contract_start_date'), array('class' => 'form-control')) !!}
     </div>
 
     <div class="form-group">
         {!! Form::label('contract_end_date', 'Contract End Date') !!}
-        {!! Form::date('contract_end_date', \Carbon\Carbon::now(), Input::old('contract_end_date'), array('class' => 'form-control')) !!}
+        {!! Form::date('contract_end_date', Input::old('contract_end_date'), array('class' => 'form-control')) !!}
     </div>
 
     <div class="form-group">
@@ -61,7 +61,7 @@
         <br>
         {!! Form::checkbox('twitter', 'Twitter', Input::old('twitter')) !!} Twitter
         <br>
-        {!! Form::checkbox('youtube', 'Youtube', Input::old('youtube')) !!} YouTube
+        {!! Form::checkbox('youtube', 'Youtube', Input::old('youtube')) !!} Youtube
         <br>
         {!! Form::checkbox('instagram', 'Instagram', Input::old('instagram')) !!} Instagram
     </div>
@@ -69,7 +69,7 @@
     {!! Form::submit('Submit', array('class' => 'btn btn-primary')) !!}
 
 {!! Form::close() !!}
-
+<br>
 </div>
 </body>
 </html>

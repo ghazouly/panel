@@ -9,6 +9,7 @@ use Validator;
 use Input;
 use Session;
 use Redirect;
+use Html;
 
 class ClientController extends Controller
 {
@@ -49,12 +50,12 @@ class ClientController extends Controller
     {
         // validate
         $rules = array(
-            'title'       => 'required',
-            'description'      => 'required',
-            'status' => 'required|boolval',
-            'contact_phone' => 'required|numeric',
-            'cnotract_start_date' => 'date',
-            'cnotract_end_date' => 'date'
+            'title'               => 'required',
+            'description'         => 'required',
+            'status'              => 'required|boolval',
+            'contact_phone'       => 'required|numeric',
+            'contract_start_date' => 'date',
+            'contract_end_date'   => 'date'
         );
         $validator = Validator::make(Input::all(), $rules);
 
@@ -65,7 +66,7 @@ class ClientController extends Controller
         $client->status                 = Input::get('status');
         $client->contact_phone          = Input::get('contact_phone');
         $client->contract_start_date    = Input::get('contract_start_date');
-        $client->contract_end_date      = Input::get('contract_start_date');
+        $client->contract_end_date      = Input::get('contract_end_date');
 
         $client->save();
 
@@ -98,7 +99,7 @@ class ClientController extends Controller
         }
 
         // redirect
-        Session::flash('message', 'Successfully Added the Client!');
+        Session::flash('message', 'Successfully Created the Client!');
         return Redirect::to('clients');
 
     }
@@ -109,9 +110,13 @@ class ClientController extends Controller
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function show(Client $client)
+    public function show($id)
     {
-        //
+        // get the client
+        $client = Client::find($id);
+        $client->services = Service::where('client_id',$client->id)->get();
+        return view('layouts.clients.show', compact('client'));
+
     }
 
     /**
@@ -120,9 +125,12 @@ class ClientController extends Controller
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function edit(Client $client)
+    public function edit($id)
     {
-        //
+      //edit the client.
+      $client = Client::find($id);
+      $client->services = Service::where('client_id',$client->id)->get();
+      return view('layouts.clients.edit', compact('client'));
     }
 
     /**
@@ -132,9 +140,33 @@ class ClientController extends Controller
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Client $client)
+    public function update($id)
     {
-        //
+      // validate
+      $rules = array(
+          'title'               => 'required',
+          'description'         => 'required',
+          'status'              => 'required|boolval',
+          'contact_phone'       => 'required|numeric',
+          'contract_start_date' => 'date',
+          'contract_end_date'   => 'date'
+      );
+      $validator = Validator::make(Input::all(), $rules);
+
+      // store
+      $client = Client::find($id);
+      $client->title                  = Input::get('title');
+      $client->description            = Input::get('description');
+      $client->status                 = Input::get('status');
+      $client->contact_phone          = Input::get('contact_phone');
+      $client->contract_start_date    = Input::get('contract_start_date');
+      $client->contract_end_date      = Input::get('contract_end_date');
+
+      $client->save();
+
+      // redirect
+      Session::flash('message', 'Successfully Updated the Client!');
+      return Redirect::to('clients/'.$client->id);
     }
 
     /**
@@ -143,8 +175,14 @@ class ClientController extends Controller
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Client $client)
+    public function destroy($id)
     {
-        //
+      // delete
+      $client = Client::find($id);
+      $client->delete();
+
+      // redirect
+      Session::flash('message', 'Successfully deleted the Client!');
+      return Redirect::to('clients');
     }
 }
